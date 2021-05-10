@@ -11,7 +11,7 @@ from mapswipe_workers.project_types.tile_map_service_grid.task import Task
 from mapswipe_workers.utils import tile_grouping_functions as t
 
 
-def tasks_to_geojson(project_extent_file, zoomlevel, outfile):
+def tasks_to_geojson(project_extent_file, zoomlevel, outfile, tutorial):
     """
     The function to create a geojson file from the tasks.
 
@@ -78,6 +78,11 @@ def tasks_to_geojson(project_extent_file, zoomlevel, outfile):
     outLayer.CreateField(ogr.FieldDefn("tile_y", ogr.OFTInteger))
     outLayer.CreateField(ogr.FieldDefn("tile_z", ogr.OFTInteger))
 
+    if tutorial:
+        # set up fields that are used in tutorial
+        outLayer.CreateField(ogr.FieldDefn("screen", ogr.OFTInteger))
+        outLayer.CreateField(ogr.FieldDefn("reference", ogr.OFTInteger))
+
     for task in tasks:
         geometry = task["geometry"]
         group_id = task["groupId"]
@@ -93,6 +98,12 @@ def tasks_to_geojson(project_extent_file, zoomlevel, outfile):
         outFeature.SetField("tile_x", int(tile_x))
         outFeature.SetField("tile_y", (tile_y))
         outFeature.SetField("tile_z", (tile_z))
+
+        if tutorial:
+            # set default values for tutorial
+            outFeature.SetField("screen", 0)
+            outFeature.SetField("reference", 0)
+
         outLayer.CreateFeature(outFeature)
         outFeature = None
 
