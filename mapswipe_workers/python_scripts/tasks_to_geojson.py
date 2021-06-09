@@ -116,5 +116,10 @@ def tasks_to_geojson(project_extent_file, zoomlevel, outfile, tutorial):
 if __name__ == "__main__":
     project_extent_file = sys.argv[1]  # geojson file
     zoomlevel = sys.argv[2]  # zoomlevel as integer
+    try:
+        tutorial = sys.argv[3]  # tutorial as bool
+    except:  # noqa
+        tutorial = False
+
     output_file = project_extent_file.replace(".geojson", "_tasks.geojson")
-    print(tasks_to_geojson(project_extent_file, zoomlevel, output_file))
+    print(tasks_to_geojson(project_extent_file, zoomlevel, output_file, tutorial))
